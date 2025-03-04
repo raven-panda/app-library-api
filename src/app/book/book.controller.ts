@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { ParseObjectIdPipe } from '../_pipes/ParseObjectIdPipe';
 import { BookDto } from './dto/book.dto';
+import { ParseObjectIdPipe } from '../../pipes/ParseObjectIdPipe';
 
 @Controller('book')
 export class BookController {
