@@ -80,8 +80,8 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --max-warnings=0"
+    "{src,test}/**/*.{js,jsx,ts,tsx}": [
+      "eslint --max-warnings=0 --ignore-path .eslintignore"
     ]
   }
 }
