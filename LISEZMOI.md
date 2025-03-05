@@ -6,20 +6,20 @@
 </p>
 
 <p style="text-align: center;">
-  E.brary is an online library application offering books in different formats: EPUB, PDF, Audio, Daisy, or in paper format.
+  Ebrary est une application de bibliothèque en ligne proposant des livres sous différent format : EPUB, PDF, Audio, Daisy, ou en format papier.
 </p>
 
 ## Description
 
-This repository contains a backend REST API made with NestJS framework and MySQL Database. \
-<a href="https://github.com/raven-panda/app-library-webapp">Link to the front-end repository</a>.
+Ce repository contiens une API REST backend crée avec le framework NestJS et MySQL Database pour le stockage des données.\
+<a href="https://github.com/raven-panda/app-library-webapp">Lien vers le repo du front-end</a>.
 
 ## Technologies
 
-This project uses **NestJS** with **TypeScript**. \
-The development **MySQL** Database is ran via **Docker**.
+Ce projet utilise **NestJS** avec **TypeScript**. \
+La base de données **MySQL** de développement est lancée via **Docker**.
 
-## Project setup
+## Setup du projet
 
 ```bash
 $ yarn install
@@ -27,57 +27,57 @@ $ yarn install
 $ npm install
 ```
 
-## Run docker
+## Lancer docker
 
 ```bash
 $ docker compose up
 ```
 
-#### Or change datasource properties specified in .env file
+#### Ou changer les propriétés de connection à la base de données dans le fichier .env
 
-## Compile and run the project
+## Compiler et lancer le projet
 
 ```bash
-# development
+# dévelopment
 $ yarn run start
 
-# watch mode
+# en watch mode
 $ yarn run start:dev
 
-# production mode
+# mode production
 $ yarn run start:prod
 ```
 
-## Run tests
+## Lancer les tests
 
 ```bash
-# unit tests
+# tests unitaires
 $ yarn run test
 
-# e2e tests
+# tests e2e
 $ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
 ```
 
-## Execute migration
+## Effectuer une migration
 
 ```bash
-# generate the migration automatically based on
-# changes to classes annotated with @Entity
+# générer la migration automatiquement en fonction
+# des changements des classes annotées avec @Entity
 $ yarn migration:generate ./src/database/migration/NomDeVotreMigration
 
-# or create it and fill it manually
+# ou la créer et la remplir manuellement ensuite
 $ yarn migration:create ./src/database/migration/NomDeVotreMigration
 
-# deploy migrations
+# déployer les migrations
 $ yarn migration:run
 
-# revert migration
+# annuler une migration
 $ yarn migration:revert
 ```
 
 ## License
 
-No license.
+Aucune license.
