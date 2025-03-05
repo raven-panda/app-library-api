@@ -1,46 +1,79 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Book } from './entities/book.entity';
-import { Model } from 'mongoose';
 import { BookDto } from './dto/book.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BookService {
   constructor(
-    @InjectModel(Book.name) private readonly bookModel: Model<Book>,
+    @InjectRepository(Book) private booksRepository: Repository<Book>,
   ) {}
 
-  protected toReturnDto(book: Book): BookDto {
+  private toEntity(book: BookDto): Book {
+    return {
+      isbn: book.isbn,
+      title: book.title,
+      // author: IAuthor,
+      coverFileId: book.coverFileId,
+      editor: book.editor,
+      genre: book.genre,
+      theme: book.theme,
+      otherTheme: book.otherTheme,
+      format: book.format,
+      isPhysicalFormat: book.isPhysicalFormat,
+      languageCode: book.languageCode,
+      targetAudience: book.targetAudience,
+      reviews: book.reviews,
+      averageRate: book.averageRate,
+      isForRent: book.isForRent,
+      price: book.price,
+    };
+  }
+
+  private toReturnDto(book: Book): BookDto {
     return {
       id: book.id,
+      isbn: book.isbn,
       title: book.title,
+      // author: IAuthor,
+      coverFileId: book.coverFileId,
+      editor: book.editor,
+      genre: book.genre,
+      theme: book.theme,
+      otherTheme: book.otherTheme,
+      format: book.format,
+      isPhysicalFormat: book.isPhysicalFormat,
+      languageCode: book.languageCode,
+      targetAudience: book.targetAudience,
+      reviews: book.reviews,
+      averageRate: book.averageRate,
+      isForRent: book.isForRent,
+      price: book.price,
     };
   }
 
   async create(createBookDto: BookDto) {
-    const newBook = new this.bookModel({
-      title: createBookDto.title,
-    });
-    return this.toReturnDto(await newBook.save());
+    const book = this.booksRepository.create(this.toEntity(createBookDto));
+    await this.booksRepository.save(book);
   }
 
   async findAll() {
-    const results = await this.bookModel.find().exec();
+    const results = await this.booksRepository.find();
     return results.map((result) => this.toReturnDto(result));
   }
 
   async findOne(id: string) {
-    const result = await this.bookModel.findById(id).exec();
+    const result = await this.booksRepository.findOneBy({ id: id });
     if (!result) throw new NotFoundException(`Book with id ${id} not found`);
 
     return this.toReturnDto(result);
   }
 
-  async update(id: string, updateBookDto: BookDto) {
-    return await this.bookModel.findByIdAndUpdate(id, updateBookDto).exec();
-  }
-
   async remove(id: string) {
-    return await this.bookModel.findByIdAndDelete(id).exec();
+    if (!(await this.booksRepository.existsBy({ id })))
+      throw new NotFoundException(`Book with id ${id} not found`);
+
+    return await this.booksRepository.delete(id);
   }
 }

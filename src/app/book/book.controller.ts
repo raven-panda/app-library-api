@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { BookService } from './book.service';
 import { BookDto } from './dto/book.dto';
-import { ParseObjectIdPipe } from '../../pipes/ParseObjectIdPipe';
 
 @Controller('book')
 export class BookController {
@@ -26,20 +17,20 @@ export class BookController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseObjectIdPipe) id: string) {
+  async findOne(@Param('id') id: string) {
     return await this.bookService.findOne(id);
   }
 
-  @Patch(':id')
+  /*@Patch(':id')
   async update(
     @Param('id', ParseObjectIdPipe) id: string,
     @Body() updateBookDto: BookDto,
   ) {
     return await this.bookService.update(id, updateBookDto);
-  }
+  }*/
 
   @Delete(':id')
-  async remove(@Param('id', ParseObjectIdPipe) id: string) {
+  async remove(@Param('id') id: string) {
     return await this.bookService.remove(id);
   }
 }

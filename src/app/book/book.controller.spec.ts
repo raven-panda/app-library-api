@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BookController } from './book.controller';
 import { BookService } from './book.service';
 import { Book } from './entities/book.entity';
-import { getModelToken } from '@nestjs/mongoose';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('BookController', () => {
   let controller: BookController;
@@ -21,7 +21,7 @@ describe('BookController', () => {
       providers: [
         BookService,
         {
-          provide: getModelToken(Book.name),
+          provide: getRepositoryToken(Book),
           useValue: mockModel,
         },
       ],
@@ -30,7 +30,7 @@ describe('BookController', () => {
     controller = module.get<BookController>(BookController);
   });
 
-  it('should be defined', () => {
+  it('controller should be defined', () => {
     expect(controller).toBeDefined();
   });
 });
