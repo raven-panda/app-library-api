@@ -3,7 +3,7 @@ services:
   ebrarydb:
     image: 'mysql:8.0.33'
     container_name: 'ebrarydb'
-    env_file: '.env'
+    env_file: '.env.development'
     ports:
       - '3307:3306'
     volumes:
