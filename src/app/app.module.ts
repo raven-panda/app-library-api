@@ -3,6 +3,7 @@ import { BookModule } from './book/book.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UploadModule } from './upload/upload.module';
+import {MulterModule} from "@nestjs/platform-express";
 
 @Module({
   imports: [
@@ -25,6 +26,9 @@ import { UploadModule } from './upload/upload.module';
         autoLoadEntities: true,
       }),
       inject: [ConfigService],
+    }),
+    MulterModule.register({
+      dest: './uploads',
     }),
     BookModule,
     UploadModule,

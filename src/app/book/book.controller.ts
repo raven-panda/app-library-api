@@ -43,10 +43,9 @@ export class BookController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateBookDto: UpdateBookDto,
-    @UploadedFile(ParseImageFilePipe) file: Express.Multer.File,
+    @Body() updateBookDto: UpdateBookDto
   ) {
-    return await this.bookService.update(id, updateBookDto, file.filename);
+    return await this.bookService.update(id, updateBookDto);
   }
 
   @Delete(':id')

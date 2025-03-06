@@ -1,18 +1,16 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Book } from './entities/book.entity';
 import { BookDto } from './dto/book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
 import { isPhysicalFormat } from '../utils/book.utils';
-import { UploadService } from '../upload/upload.service';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectRepository(Book) private booksRepository: Repository<Book>,
-    @Inject(UploadService) private uploadService: UploadService,
   ) {}
 
   private toEntity(bookDto: CreateBookDto, fileName: string): Book {
@@ -64,15 +62,13 @@ export class BookService {
     return this.toDto(await this.booksRepository.save(book));
   }
 
-  async update(id: string, updateBookDto: UpdateBookDto, fileName: string) {
+  async update(id: string, updateBookDto: UpdateBookDto) {
     updateBookDto.id = id;
 
     const result = await this.booksRepository.findOneBy({ id: id });
     if (!result) throw new NotFoundException(`Book with id ${id} not found`);
 
-    this.uploadService.unlinkFile(updateBookDto.oldCoverFileId);
-
-    const book = this.toEntity(updateBookDto, fileName);
+    const book = this.toEntity(updateBookDto, updateBookDto.coverFileId);
     return this.toDto(await this.booksRepository.save(book));
   }
 

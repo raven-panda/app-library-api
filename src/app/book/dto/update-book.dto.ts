@@ -5,5 +5,5 @@ export class UpdateBookDto extends CreateBookDto {
   @IsNotEmpty()
   id: string;
   @IsNotEmpty()
-  oldCoverFileId: string;
+  coverFileId: string;
 }
