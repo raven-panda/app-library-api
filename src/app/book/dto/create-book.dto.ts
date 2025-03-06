@@ -2,11 +2,10 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 import { BookGenreType } from '../../../type/bookgenre.type';
 import { BookThemeType } from '../../../type/booktheme.type';
 import { BookFormatType } from '../../../type/bookformat.type';
-import { TargetAudienceType } from '../../../type/targetaudience.type';
 import { LanguageCode } from 'iso-639-1';
+import { TargetAudienceType } from '../../../type/targetaudience.type';
 
-export class BookDto {
-  id?: string;
+export class CreateBookDto {
   @IsNotEmpty()
   isbn: string;
   @IsNotEmpty()
@@ -15,9 +14,6 @@ export class BookDto {
   description: string;
   // @IsNotEmpty()
   // author: IAuthor;
-  /** @url */
-  @IsNotEmpty()
-  coverFileId: string;
   @IsNotEmpty()
   editor: string;
   @IsNotEmpty()
@@ -25,7 +21,7 @@ export class BookDto {
   @IsNotEmpty()
   theme: BookThemeType;
   @IsOptional()
-  otherTheme?: string | null = null;
+  otherTheme?: string;
   @IsNotEmpty()
   format: BookFormatType;
   @IsNotEmpty()
@@ -34,10 +30,6 @@ export class BookDto {
   languageCode: LanguageCode;
   @IsNotEmpty()
   targetAudience: TargetAudienceType;
-  @IsOptional()
-  reviews?: number = 0;
-  @IsOptional()
-  averageRate?: number = 0;
   @IsNotEmpty()
   isForRent: boolean;
   @IsNotEmpty()

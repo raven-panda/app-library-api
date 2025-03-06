@@ -1,41 +1,47 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Book } from './entities/book.entity';
 import { BookDto } from './dto/book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateBookDto } from './dto/create-book.dto';
+import { isPhysicalFormat } from '../utils/book.utils';
+import { UploadService } from '../upload/upload.service';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectRepository(Book) private booksRepository: Repository<Book>,
+    @Inject(UploadService) private uploadService: UploadService,
   ) {}
 
-  private toEntity(book: BookDto): Book {
+  private toEntity(bookDto: CreateBookDto, fileName: string): Book {
     return {
-      isbn: book.isbn,
-      title: book.title,
-      // author: IAuthor,
-      coverFileId: book.coverFileId,
-      editor: book.editor,
-      genre: book.genre,
-      theme: book.theme,
-      otherTheme: book.otherTheme,
-      format: book.format,
-      isPhysicalFormat: book.isPhysicalFormat,
-      languageCode: book.languageCode,
-      targetAudience: book.targetAudience,
-      reviews: book.reviews,
-      averageRate: book.averageRate,
-      isForRent: book.isForRent,
-      price: book.price,
+      isbn: bookDto.isbn,
+      averageRate: 0,
+      coverFileId: fileName,
+      editor: bookDto.editor,
+      format: bookDto.format,
+      genre: bookDto.genre,
+      isForRent: bookDto.isForRent,
+      isPhysicalFormat: isPhysicalFormat(bookDto.format),
+      languageCode: bookDto.languageCode,
+      otherTheme: bookDto.otherTheme ?? null,
+      price: bookDto.price,
+      reviews: 0,
+      targetAudience: bookDto.targetAudience,
+      theme: bookDto.theme,
+      title: bookDto.title,
+      description: bookDto.description,
     };
   }
 
-  private toReturnDto(book: Book): BookDto {
+  private toDto(book: Book): BookDto {
     return {
       id: book.id,
       isbn: book.isbn,
       title: book.title,
+      description: book.description,
       // author: IAuthor,
       coverFileId: book.coverFileId,
       editor: book.editor,
@@ -53,27 +59,39 @@ export class BookService {
     };
   }
 
-  async create(createBookDto: BookDto) {
-    const book = this.booksRepository.create(this.toEntity(createBookDto));
-    await this.booksRepository.save(book);
+  async create(createBookDto: CreateBookDto, fileName: string) {
+    const book = this.toEntity(createBookDto, fileName);
+    return this.toDto(await this.booksRepository.save(book));
+  }
+
+  async update(id: string, updateBookDto: UpdateBookDto, fileName: string) {
+    updateBookDto.id = id;
+
+    const result = await this.booksRepository.findOneBy({ id: id });
+    if (!result) throw new NotFoundException(`Book with id ${id} not found`);
+
+    this.uploadService.unlinkFile(updateBookDto.oldCoverFileId);
+
+    const book = this.toEntity(updateBookDto, fileName);
+    return this.toDto(await this.booksRepository.save(book));
   }
 
   async findAll() {
     const results = await this.booksRepository.find();
-    return results.map((result) => this.toReturnDto(result));
+    return results.map((result) => this.toDto(result));
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<BookDto> {
     const result = await this.booksRepository.findOneBy({ id: id });
     if (!result) throw new NotFoundException(`Book with id ${id} not found`);
 
-    return this.toReturnDto(result);
+    return this.toDto(result);
   }
 
-  async remove(id: string) {
-    if (!(await this.booksRepository.existsBy({ id })))
-      throw new NotFoundException(`Book with id ${id} not found`);
+  async remove(id: string): Promise<Book> {
+    const result = await this.booksRepository.findOneBy({ id: id });
+    if (!result) throw new NotFoundException(`Book with id ${id} not found`);
 
-    return await this.booksRepository.delete(id);
+    return await this.booksRepository.remove(result);
   }
 }

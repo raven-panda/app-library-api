@@ -22,6 +22,9 @@ export class Book {
   @Column()
   title: string;
 
+  @Column({ type: 'text' })
+  description: string;
+
   // author: IAuthor;
   /** @url */
   @Column({ length: 64, nullable: true })
