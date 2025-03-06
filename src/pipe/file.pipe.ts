@@ -3,14 +3,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-const IMAGE_MIME = 'jpeg,jpg,png,webp';
+const IMAGE_MIME_REGEX = /image\/(jpeg|jpg|png|webp)$/;
 
 export const ParseImageFilePipe = new ParseFilePipeBuilder()
   .addFileTypeValidator({
-    fileType: IMAGE_MIME,
+    fileType: IMAGE_MIME_REGEX,
   })
   .addMaxSizeValidator({
-    maxSize: 2000,
+    maxSize: 2 * 1024 * 1024,
   })
   .build({
     errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
