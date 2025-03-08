@@ -13,11 +13,11 @@ export class BookService {
     @InjectRepository(Book) private booksRepository: Repository<Book>,
   ) {}
 
-  private toEntity(bookDto: CreateBookDto, fileName: string): Book {
+  private toEntity(bookDto: CreateBookDto): Book {
     return {
       isbn: bookDto.isbn,
       averageRate: 0,
-      coverFileId: fileName,
+      coverFileId: bookDto.coverFileId,
       editor: bookDto.editor,
       format: bookDto.format,
       genre: bookDto.genre,
@@ -57,18 +57,16 @@ export class BookService {
     };
   }
 
-  async create(createBookDto: CreateBookDto, fileName: string) {
-    const book = this.toEntity(createBookDto, fileName);
+  async create(createBookDto: CreateBookDto) {
+    const book = this.toEntity(createBookDto);
     return this.toDto(await this.booksRepository.save(book));
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {
+    if (!(await this.booksRepository.existsBy({ id: id })))
+      throw new NotFoundException(`Book with id ${id} not found`);
     updateBookDto.id = id;
-
-    const result = await this.booksRepository.findOneBy({ id: id });
-    if (!result) throw new NotFoundException(`Book with id ${id} not found`);
-
-    const book = this.toEntity(updateBookDto, updateBookDto.coverFileId);
+    const book = this.toEntity(updateBookDto);
     return this.toDto(await this.booksRepository.save(book));
   }
 
