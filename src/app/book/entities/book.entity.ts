@@ -10,6 +10,7 @@ import {
   TargetAudienceValues,
 } from '../../../type/targetaudience.type';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {bigintTransformer} from "../../utils/book.utils";
 
 @Entity()
 export class Book {
@@ -54,7 +55,7 @@ export class Book {
   @Column({ type: 'enum', enum: TargetAudienceValues })
   targetAudience: TargetAudienceType;
 
-  @Column({ type: 'bigint', default: 0 })
+  @Column({ type: 'bigint', default: 0, transformer: bigintTransformer })
   reviews: number;
 
   @Column({ default: 0 })
