@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { BookModule } from './book/book.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UploadModule } from './upload/upload.module';
+import { FileModule } from './file/file.module';
 import {MulterModule} from "@nestjs/platform-express";
 
 @Module({
@@ -31,7 +31,7 @@ import {MulterModule} from "@nestjs/platform-express";
       dest: './uploads',
     }),
     BookModule,
-    UploadModule,
+    FileModule,
   ],
 })
 export class AppModule {}
