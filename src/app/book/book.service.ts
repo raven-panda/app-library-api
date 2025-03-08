@@ -4,7 +4,7 @@ import { BookDto } from './dto/book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
-import { isPhysicalFormat } from '../utils/book.utils';
+import { isGivenFormatPhysical } from '../utils/book.utils';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class BookService {
       format: bookDto.format,
       genre: bookDto.genre,
       isForRent: bookDto.isForRent,
-      isPhysicalFormat: isPhysicalFormat(bookDto.format),
+      isPhysicalFormat: isGivenFormatPhysical(bookDto.format),
       languageCode: bookDto.languageCode,
       otherTheme: bookDto.otherTheme ?? null,
       price: bookDto.price,

@@ -57,7 +57,6 @@ export class BookDto {
   format: BookFormatType;
   @IsNotEmpty()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true' || value === true)
   isPhysicalFormat: boolean;
   @IsNotEmpty()
   @IsString()
@@ -77,7 +76,6 @@ export class BookDto {
   averageRate?: number = 0;
   @IsNotEmpty()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true' || value === true)
   isForRent: boolean;
   @IsNotEmpty()
   @IsNumber()

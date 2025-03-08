@@ -60,7 +60,6 @@ export class CreateBookDto {
 
   @IsNotEmpty()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true' || value === true)
   isPhysicalFormat: boolean;
 
   @IsNotEmpty()
@@ -73,11 +72,12 @@ export class CreateBookDto {
 
   @IsNotEmpty()
   @IsBoolean()
-  @Transform(({ value }) => value === 'true' || value === true)
   isForRent: boolean;
 
   @IsNotEmpty()
   @IsNumber()
-  @Transform(({ value }) => isNaN(parseFloat(String(value))) ? 0 : parseFloat(String(value)))
+  @Transform(({ value }) =>
+    isNaN(parseFloat(String(value))) ? 0 : parseFloat(String(value)),
+  )
   price: number;
 }

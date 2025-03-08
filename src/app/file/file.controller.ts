@@ -17,11 +17,11 @@ import { FileService } from './file.service';
 
 @Controller('file')
 export class FileController {
-  constructor(private readonly uploadService: FileService) {}
+  constructor(private readonly fileService: FileService) {}
 
   @Get(':id')
   findOne(@Param('id') id: string, @Res() res: Response) {
-    const file = this.uploadService.findOne(id);
+    const file = this.fileService.findOne(id);
     file.pipe(res);
   }
 
@@ -39,12 +39,12 @@ export class FileController {
     @Param('id') id: string,
     @UploadedFile(ParseImageFilePipe) file: Express.Multer.File,
   ) {
-    this.uploadService.update(id, file.filename);
+    this.fileService.update(id, file.filename);
     return { id: file.filename };
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    this.uploadService.remove(id);
+    this.fileService.remove(id);
   }
 }
