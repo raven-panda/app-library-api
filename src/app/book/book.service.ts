@@ -4,8 +4,9 @@ import { BookDto } from './dto/book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
-import { isGivenFormatPhysical } from '../utils/book.utils';
+import { buildBookSearch, isGivenFormatPhysical } from '../utils/book.utils';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { SearchBookDto } from './dto/search-book.dto';
 
 @Injectable()
 export class BookService {
@@ -72,6 +73,12 @@ export class BookService {
 
   async findAll() {
     const results = await this.booksRepository.find();
+    return results.map((result) => this.toDto(result));
+  }
+
+  async search(payload: SearchBookDto) {
+    const qb = this.booksRepository.createQueryBuilder('book');
+    const results = await buildBookSearch(qb, payload);
     return results.map((result) => this.toDto(result));
   }
 

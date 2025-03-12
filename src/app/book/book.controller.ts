@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { SearchBookDto } from './dto/search-book.dto';
 
 @Controller('book')
 export class BookController {
@@ -23,6 +25,11 @@ export class BookController {
   @Get()
   async findAll() {
     return await this.bookService.findAll();
+  }
+
+  @Get('search')
+  async search(@Query() payload: SearchBookDto) {
+    return await this.bookService.search(payload);
   }
 
   @Get(':id')
