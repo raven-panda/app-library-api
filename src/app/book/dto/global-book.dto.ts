@@ -6,6 +6,7 @@ export class BookGlobalDto extends DtoAbstract<Book> {
   id: string;
   title: string;
   authorFullName: string;
+  editor: string;
   /** @url */
   coverFileId: string;
   reviews: number;
@@ -19,6 +20,7 @@ export class BookGlobalDto extends DtoAbstract<Book> {
     this.id = book.id;
     this.title = book.title;
     this.authorFullName = '';
+    this.editor = book.editor;
     this.coverFileId = book.coverFileId;
     this.reviews = book.reviews;
     this.averageRate = book.averageRate;

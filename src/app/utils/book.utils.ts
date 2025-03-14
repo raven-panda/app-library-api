@@ -54,6 +54,7 @@ export async function buildBookSearch(
     'book.title',
     'book.coverFileId',
     'book.reviews',
+    'book.editor',
     'book.averageRate',
     'book.isForRent',
     'book.price'
