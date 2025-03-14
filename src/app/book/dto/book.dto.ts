@@ -20,8 +20,10 @@ import {
 } from '../../../type/targetaudience.type';
 import { LanguageCode } from 'iso-639-1';
 import { Transform } from 'class-transformer';
+import {DtoAbstract} from "../../../type/abstracts/dto.abstract";
+import {Book} from "../entities/book.entity";
 
-export class BookDto {
+export class BookDto extends DtoAbstract<Book> {
   @IsOptional()
   @IsString()
   id?: string;
@@ -81,4 +83,25 @@ export class BookDto {
   @IsNumber()
   @Transform(({ value }) => isNaN(parseFloat(String(value))) ? 0 : parseFloat(String(value)))
   price: number;
+
+  fromEntity(book: Book): BookDto {
+    this.id = book.id;
+    this.title = book.title;
+    this.coverFileId = book.coverFileId;
+    this.reviews = book.reviews;
+    this.averageRate = book.averageRate;
+    this.isForRent = book.isForRent;
+    this.price = book.price;
+    this.isbn = book.isbn;
+    this.editor = book.editor;
+    this.genre = book.genre;
+    this.theme = book.theme;
+    this.otherTheme = book.otherTheme;
+    this.format = book.format;
+    this.isPhysicalFormat = book.isPhysicalFormat;
+    this.languageCode = book.languageCode;
+    this.targetAudience = book.targetAudience;
+
+    return this;
+  }
 }

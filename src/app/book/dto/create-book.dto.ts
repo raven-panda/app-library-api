@@ -18,8 +18,11 @@ import {
   TargetAudienceValues,
 } from '../../../type/targetaudience.type';
 import { Transform } from 'class-transformer';
+import {DtoAbstract} from "../../../type/abstracts/dto.abstract";
+import {Book} from "../entities/book.entity";
+import {InvalidClassException} from "@nestjs/core/errors/exceptions";
 
-export class CreateBookDto {
+export class CreateBookDto extends DtoAbstract<Book> {
   @IsNotEmpty()
   @IsString()
   isbn: string;
@@ -80,4 +83,10 @@ export class CreateBookDto {
     isNaN(parseFloat(String(value))) ? 0 : parseFloat(String(value)),
   )
   price: number;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  fromEntity(entity: Book): CreateBookDto {
+    throw new InvalidClassException("This DTO doesn't support this method.");
+  }
+
 }

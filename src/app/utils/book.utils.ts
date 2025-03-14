@@ -49,7 +49,15 @@ export async function buildBookSearch(
       maxPrice: payload.priceRange[1],
     });
 
-  return await qb.getMany();
+  return await qb.select([
+    'book.id',
+    'book.title',
+    'book.coverFileId',
+    'book.reviews',
+    'book.averageRate',
+    'book.isForRent',
+    'book.price'
+  ]).getMany();
 }
 
 /** @todo: implement author parameter */

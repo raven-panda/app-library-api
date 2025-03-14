@@ -10,10 +10,13 @@ import {
   TargetAudienceValues,
 } from '../../../type/targetaudience.type';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import {bigintTransformer} from "../../utils/book.utils";
+import { bigintTransformer } from '../../utils/book.utils';
+import { EntityAbstract } from '../../../type/abstracts/entity.abstract';
+import { CreateBookDto } from '../dto/create-book.dto';
+import { UpdateBookDto } from '../dto/update-book.dto';
 
 @Entity()
-export class Book {
+export class Book extends EntityAbstract<CreateBookDto, UpdateBookDto> {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
 
@@ -66,4 +69,24 @@ export class Book {
 
   @Column()
   price: number;
+
+  public fromDto(book: CreateBookDto | UpdateBookDto): Book {
+    if ('id' in book) this.id = book.id;
+
+    this.title = book.title;
+    this.coverFileId = book.coverFileId;
+    this.isForRent = book.isForRent;
+    this.price = book.price;
+    this.isbn = book.isbn;
+    this.editor = book.editor;
+    this.genre = book.genre;
+    this.theme = book.theme;
+    this.otherTheme = book.otherTheme ?? null;
+    this.format = book.format;
+    this.isPhysicalFormat = book.isPhysicalFormat;
+    this.languageCode = book.languageCode;
+    this.targetAudience = book.targetAudience;
+
+    return this;
+  }
 }
