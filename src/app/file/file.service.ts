@@ -11,7 +11,7 @@ import { ReadStream } from 'fs';
 export class FileService {
   findOne(id: string): ReadStream {
     if (!existsSync(join(process.cwd(), 'uploads', id)))
-      throw new NotFoundException(`File ${id} to delete not found`);
+      throw new NotFoundException(`File ${id} not found`);
 
     try {
       return createReadStream(join(process.cwd(), 'uploads', id));
