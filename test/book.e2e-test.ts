@@ -51,8 +51,12 @@ describe('When I request book resource', () => {
       languageCode: 'en',
       price: 0,
       targetAudience: 'COMMITTED_AND_SOCIAL',
-      theme: 'DESTINY_FREEWILL',
+      themes: [
+        'DESTINY_FREEWILL'
+      ],
       description: 'Test long description',
+
+      fromEntity: (): CreateBookDto => bookToCreate,
     };
 
     bookToCreate.isPhysicalFormat = isGivenFormatPhysical(bookToCreate.format);
@@ -62,7 +66,6 @@ describe('When I request book resource', () => {
       .send(bookToCreate)
       .expect(201)
       .expect((res) => {
-        console.log(res.body);
         expect(res.body).toBeTruthy();
         const resDto: BookDto = res.body as BookDto;
 
@@ -70,7 +73,7 @@ describe('When I request book resource', () => {
         expect(resDto.targetAudience).toEqual(bookToCreate.targetAudience);
         expect(resDto.format).toEqual(bookToCreate.format);
         expect(resDto.genre).toEqual(bookToCreate.genre);
-        expect(resDto.theme).toEqual(bookToCreate.theme);
+        expect(resDto.themes).toEqual(bookToCreate.themes);
         expect(resDto.description).toEqual(bookToCreate.description);
         expect(resDto.editor).toEqual(bookToCreate.editor);
         expect(resDto.title).toEqual(bookToCreate.title);

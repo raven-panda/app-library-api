@@ -1,5 +1,5 @@
 import { BookGenreType, BookGenreValues } from '../../../type/bookgenre.type';
-import { BookThemeType, BookThemeValues } from '../../../type/booktheme.type';
+import { BookThemeType } from '../../../type/booktheme.type';
 import {
   BookFormatType,
   BookFormatValues,
@@ -40,11 +40,11 @@ export class Book extends EntityAbstract<CreateBookDto, UpdateBookDto> {
   @Column({ type: 'enum', enum: BookGenreValues })
   genre: BookGenreType;
 
-  @Column({ type: 'enum', enum: BookThemeValues })
-  theme: BookThemeType;
+  @Column({ type: 'text' })
+  themes: BookThemeType[];
 
-  @Column({ type: 'varchar', nullable: true, length: 64 })
-  otherTheme: string | null;
+  @Column({ type: 'text', nullable: true })
+  otherThemes: string[] | null;
 
   @Column({ type: 'enum', enum: BookFormatValues })
   format: BookFormatType;
@@ -70,18 +70,19 @@ export class Book extends EntityAbstract<CreateBookDto, UpdateBookDto> {
   @Column()
   price: number;
 
-  public fromDto(book: CreateBookDto | UpdateBookDto): Book {
-    if ('id' in book) this.id = book.id;
+  public fromDto(book: CreateBookDto | UpdateBookDto, isCreate: boolean): Book {
+    if (!isCreate && 'id' in book) this.id = book.id;
 
     this.title = book.title;
     this.coverFileId = book.coverFileId;
     this.isForRent = book.isForRent;
+    this.description = book.description;
     this.price = book.price;
     this.isbn = book.isbn;
     this.editor = book.editor;
     this.genre = book.genre;
-    this.theme = book.theme;
-    this.otherTheme = book.otherTheme ?? null;
+    this.themes = book.themes;
+    this.otherThemes = book.otherThemes ?? null;
     this.format = book.format;
     this.isPhysicalFormat = book.isPhysicalFormat;
     this.languageCode = book.languageCode;

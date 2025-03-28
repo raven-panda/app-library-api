@@ -50,12 +50,17 @@ export class CreateBookDto extends DtoAbstract<Book> {
   genre: BookGenreType;
 
   @IsNotEmpty()
-  @IsEnum(BookThemeValues)
-  theme: BookThemeType;
+  @Transform(({ value }) =>
+    String(value)
+      ?.split(',')
+      .map((v) => String(v)),
+  )
+  @IsEnum(BookThemeValues, { each: true })
+  themes: BookThemeType[];
 
   @IsOptional()
   @IsString()
-  otherTheme?: string;
+  otherThemes?: string[];
 
   @IsNotEmpty()
   @IsEnum(BookFormatValues)

@@ -49,11 +49,21 @@ export class BookDto extends DtoAbstract<Book> {
   @IsEnum(BookGenreValues)
   genre: BookGenreType;
   @IsNotEmpty()
-  @IsEnum(BookThemeValues)
-  theme: BookThemeType;
+  @Transform(({ value }) =>
+    String(value)
+      ?.split(',')
+      .map((v) => String(v)),
+  )
+  @IsEnum(BookThemeValues, { each: true })
+  themes: BookThemeType[];
   @IsOptional()
-  @IsString()
-  otherTheme?: string | null = null;
+  @Transform(({ value }) =>
+    String(value)
+      ?.split(',')
+      .map((v) => String(v)),
+  )
+  @IsString({ each: true })
+  otherThemes?: string[] | null = null;
   @IsNotEmpty()
   @IsEnum(BookFormatValues)
   format: BookFormatType;
@@ -91,12 +101,13 @@ export class BookDto extends DtoAbstract<Book> {
     this.reviews = book.reviews;
     this.averageRate = book.averageRate;
     this.isForRent = book.isForRent;
+    this.description = book.description;
     this.price = book.price;
     this.isbn = book.isbn;
     this.editor = book.editor;
     this.genre = book.genre;
-    this.theme = book.theme;
-    this.otherTheme = book.otherTheme;
+    this.themes = book.themes;
+    this.otherThemes = book.otherThemes;
     this.format = book.format;
     this.isPhysicalFormat = book.isPhysicalFormat;
     this.languageCode = book.languageCode;

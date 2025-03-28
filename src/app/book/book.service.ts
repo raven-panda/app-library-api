@@ -16,7 +16,7 @@ export class BookService {
   ) {}
 
   async create(createBookDto: CreateBookDto): Promise<BookDto> {
-    const book = new Book().fromDto(createBookDto);
+    const book = new Book().fromDto(createBookDto, true);
     return new BookDto().fromEntity(await this.booksRepository.save(book));
   }
 
@@ -24,7 +24,7 @@ export class BookService {
     if (!(await this.booksRepository.existsBy({ id: id })))
       throw new NotFoundException(`Book with id ${id} not found`);
     updateBookDto.id = id;
-    const book = new Book().fromDto(updateBookDto);
+    const book = new Book().fromDto(updateBookDto, false);
     return new BookDto().fromEntity(await this.booksRepository.save(book));
   }
 

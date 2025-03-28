@@ -26,9 +26,14 @@ export class SearchBookDto {
   @IsEnum(BookGenreValues)
   @IsOptional()
   genre?: BookGenreType;
-  @IsEnum(BookThemeValues)
+  @Transform(({ value }) =>
+    String(value)
+      ?.split(',')
+      .map((v) => String(v)),
+  )
+  @IsEnum(BookThemeValues, { each: true })
   @IsOptional()
-  theme?: BookThemeType;
+  themes?: BookThemeType[];
   @IsEnum(TargetAudienceValues)
   @IsOptional()
   targetAudience?: TargetAudienceType;

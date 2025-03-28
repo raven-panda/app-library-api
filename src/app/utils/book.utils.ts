@@ -31,8 +31,15 @@ export async function buildBookSearch(
     qb.andWhere('book.languageCode LIKE :language', {
       language: `%${payload.language}%`,
     });
-  if (payload.theme)
-    qb.andWhere('book.theme LIKE :theme', { theme: `%${payload.theme}%` });
+  if (payload.themes?.length) {
+    const conditions = payload.themes.map((_, index) => `book.themes LIKE :theme${index}`).join(' OR ');
+    const parameters = payload.themes.reduce((acc, theme, index) => {
+      acc[`theme${index}`] = `%${theme}%`;
+      return acc;
+    }, {});
+
+    qb.andWhere(`(${conditions})`, parameters);
+  }
   if (payload.targetAudience)
     qb.andWhere('book.targetAudience LIKE :targetAudience', {
       targetAudience: `%${payload.targetAudience}%`,
