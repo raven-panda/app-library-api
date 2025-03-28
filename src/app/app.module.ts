@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { FileModule } from './file/file.module';
 import {MulterModule} from "@nestjs/platform-express";
+import { AuthorModule } from "./author/author.module";
 
 const getEnvFilePath = () => {
   return process.env.NODE_ENV === 'production'
@@ -35,6 +36,7 @@ const getEnvFilePath = () => {
     MulterModule.register({
       dest: './uploads',
     }),
+    AuthorModule,
     BookModule,
     FileModule,
   ],

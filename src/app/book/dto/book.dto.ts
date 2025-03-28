@@ -20,8 +20,9 @@ import {
 } from '../../../type/targetaudience.type';
 import { LanguageCode } from 'iso-639-1';
 import { Transform } from 'class-transformer';
-import {DtoAbstract} from "../../../type/abstracts/dto.abstract";
-import {Book} from "../entities/book.entity";
+import { DtoAbstract } from '../../../type/abstracts/dto.abstract';
+import { Book } from '../entities/book.entity';
+import { AuthorDto } from "../../author/dto/author.dto";
 
 export class BookDto extends DtoAbstract<Book> {
   @IsOptional()
@@ -33,6 +34,11 @@ export class BookDto extends DtoAbstract<Book> {
   @IsNotEmpty()
   @IsString()
   title: string;
+
+  @IsNotEmpty()
+  @IsString()
+  author: AuthorDto;
+
   @IsNotEmpty()
   @IsString()
   description: string;
@@ -91,13 +97,16 @@ export class BookDto extends DtoAbstract<Book> {
   isForRent: boolean;
   @IsNotEmpty()
   @IsNumber()
-  @Transform(({ value }) => isNaN(parseFloat(String(value))) ? 0 : parseFloat(String(value)))
+  @Transform(({ value }) =>
+    isNaN(parseFloat(String(value))) ? 0 : parseFloat(String(value)),
+  )
   price: number;
 
   fromEntity(book: Book): BookDto {
     this.id = book.id;
     this.title = book.title;
     this.coverFileId = book.coverFileId;
+    this.author = book.author && new AuthorDto().fromEntity(book.author);
     this.reviews = book.reviews;
     this.averageRate = book.averageRate;
     this.isForRent = book.isForRent;

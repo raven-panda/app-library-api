@@ -33,9 +33,11 @@ export class CreateBookDto extends DtoAbstract<Book> {
 
   @IsNotEmpty()
   @IsString()
+  authorId: string;
+
+  @IsNotEmpty()
+  @IsString()
   description: string;
-  // @IsNotEmpty()
-  // author: IAuthor;
 
   @IsNotEmpty()
   @IsString()

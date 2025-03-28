@@ -60,12 +60,13 @@ export async function buildBookSearch(
     'book.id',
     'book.title',
     'book.coverFileId',
+    'book.authorId',
     'book.reviews',
     'book.editor',
     'book.averageRate',
     'book.isForRent',
     'book.price'
-  ]).getMany();
+  ]).leftJoinAndSelect('book.author', 'author').getMany();
 }
 
 /** @todo: implement author parameter */
