@@ -28,11 +28,6 @@ export class BookService {
     return new BookDto().fromEntity(await this.booksRepository.save(book));
   }
 
-  async findAll(): Promise<BookDto[]> {
-    const results = await this.booksRepository.find();
-    return results.map((result) => new BookDto().fromEntity(result));
-  }
-
   async search(payload: SearchBookDto): Promise<BookGlobalDto[]> {
     const qb = this.booksRepository.createQueryBuilder('book');
     const results = await buildBookSearch(qb, payload);
@@ -49,7 +44,7 @@ export class BookService {
   async remove(id: string): Promise<boolean> {
     const result = await this.booksRepository.findOneBy({ id: id });
     if (!result) throw new NotFoundException(`Book with id ${id} not found`);
-
+    await this.booksRepository.delete(id);
     return true;
   }
 }

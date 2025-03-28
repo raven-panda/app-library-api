@@ -5,13 +5,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { FileModule } from './file/file.module';
 import {MulterModule} from "@nestjs/platform-express";
 
+const getEnvFilePath = () => {
+  return process.env.NODE_ENV === 'production'
+    ? ['.env.production', '.env']
+    : process.env.NODE_ENV === 'test' ?
+      ['.env.test.local', '.env.test', '.env.development.local', '.env.development', '.env']
+      : ['.env.development.local', '.env.development', '.env'];
+};
+
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath:
-        process.env.NODE_ENV === 'production'
-          ? ['.env.production', '.env']
-          : ['.env.development.local', '.env.development', '.env'],
+      envFilePath: getEnvFilePath(),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

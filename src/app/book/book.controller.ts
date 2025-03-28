@@ -22,11 +22,6 @@ export class BookController {
     return await this.bookService.create(createBookDto);
   }
 
-  @Get()
-  async findAll() {
-    return await this.bookService.findAll();
-  }
-
   @Get('search')
   async search(@Query() payload: SearchBookDto) {
     return await this.bookService.search(payload);

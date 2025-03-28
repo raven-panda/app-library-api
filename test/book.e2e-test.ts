@@ -29,9 +29,9 @@ describe('When I request book resource', () => {
     await app.close();
   });
 
-  it('Then [GET]/book should return a collection of all books', () => {
+  it('Then [GET]/book/search should return a collection of all books', () => {
     return request(app.getHttpServer())
-      .get('/book')
+      .get('/book/search')
       .expect(200)
       .expect((res) => {
         expect(res.body).toBeInstanceOf(Array);
