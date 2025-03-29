@@ -22,7 +22,7 @@ import { LanguageCode } from 'iso-639-1';
 import { Transform } from 'class-transformer';
 import { DtoAbstract } from '../../../type/abstracts/dto.abstract';
 import { Book } from '../entities/book.entity';
-import { AuthorDto } from "../../author/dto/author.dto";
+import { AuthorDto } from '../../author/dto/author.dto';
 
 export class BookDto extends DtoAbstract<Book> {
   @IsOptional()

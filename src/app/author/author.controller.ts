@@ -1,6 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
-import { AuthorDto } from "./dto/author.dto";
-import { AuthorService } from "./author.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { AuthorDto } from './dto/author.dto';
+import { AuthorService } from './author.service';
 
 @Controller('author')
 export class AuthorController {
@@ -22,7 +30,10 @@ export class AuthorController {
   }
 
   @Patch(':id')
-  public async update(@Param('id') id: string, @Body() body: AuthorDto): Promise<AuthorDto> {
+  public async update(
+    @Param('id') id: string,
+    @Body() body: AuthorDto,
+  ): Promise<AuthorDto> {
     return await this.authorService.update(id, body);
   }
 
@@ -30,5 +41,4 @@ export class AuthorController {
   public async remove(@Param('id') id: string): Promise<void> {
     await this.authorService.remove(id);
   }
-
 }

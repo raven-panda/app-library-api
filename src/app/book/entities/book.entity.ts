@@ -14,7 +14,7 @@ import { bigintTransformer } from '../../utils/book.utils';
 import { EntityAbstract } from '../../../type/abstracts/entity.abstract';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
-import { Author } from "../../author/entities/author.entity";
+import { Author } from '../../author/entities/author.entity';
 
 @Entity()
 export class Book extends EntityAbstract<CreateBookDto, UpdateBookDto> {
@@ -28,7 +28,7 @@ export class Book extends EntityAbstract<CreateBookDto, UpdateBookDto> {
   title: string;
 
   @ManyToOne(() => Author, (author) => author.books, {
-    onDelete: "CASCADE"
+    onDelete: 'CASCADE',
   })
   author: Author;
 

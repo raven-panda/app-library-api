@@ -1,7 +1,7 @@
 import { DtoAbstract } from '../../../type/abstracts/dto.abstract';
 import { Author } from '../entities/author.entity';
 import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
-import { BookGlobalDto } from "../../book/dto/global-book.dto";
+import { BookGlobalDto } from '../../book/dto/global-book.dto';
 
 export class AuthorDto extends DtoAbstract<Author> {
   @IsOptional()
@@ -24,7 +24,7 @@ export class AuthorDto extends DtoAbstract<Author> {
     this.id = entity.id;
     this.firstName = entity.firstName;
     this.lastName = entity.lastName;
-    this.books = entity.books?.map(b => new BookGlobalDto().fromEntity(b));
+    this.books = entity.books?.map((b) => new BookGlobalDto().fromEntity(b));
 
     return this;
   }

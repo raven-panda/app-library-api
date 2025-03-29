@@ -30,9 +30,7 @@ export class FileService {
       return createReadStream(join(process.cwd(), 'uploads', newId));
     } catch (e) {
       console.error('Error while updating file', e);
-      throw new InternalServerErrorException(
-        'Error while updating file',
-      );
+      throw new InternalServerErrorException('Error while updating file');
     }
   }
 

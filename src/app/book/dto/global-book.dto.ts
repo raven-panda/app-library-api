@@ -19,7 +19,8 @@ export class BookGlobalDto extends DtoAbstract<Book> {
 
     this.id = book.id;
     this.title = book.title;
-    this.authorFullName = book.author && `${book.author.firstName} ${book.author.lastName}`;
+    this.authorFullName =
+      book.author && `${book.author.firstName} ${book.author.lastName}`;
     this.editor = book.editor;
     this.coverFileId = book.coverFileId;
     this.reviews = book.reviews;

@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app/app.module';
 import { BookModule } from '../src/app/book/book.module';
-import {INestApplication, ValidationPipe} from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { App } from 'supertest/types';
 import { CreateBookDto } from '../src/app/book/dto/create-book.dto';
 import { BookDto } from '../src/app/book/dto/book.dto';
@@ -51,9 +51,7 @@ describe('When I request book resource', () => {
       languageCode: 'en',
       price: 0,
       targetAudience: 'COMMITTED_AND_SOCIAL',
-      themes: [
-        'DESTINY_FREEWILL'
-      ],
+      themes: ['DESTINY_FREEWILL'],
       description: 'Test long description',
 
       fromEntity: (): CreateBookDto => bookToCreate,
@@ -90,9 +88,6 @@ describe('When I request book resource', () => {
   });
 
   it('Then [POST]/book with invalid body should return 400', () => {
-    return request(app.getHttpServer())
-      .post('/book')
-      .send({})
-      .expect(400);
+    return request(app.getHttpServer()).post('/book').send({}).expect(400);
   });
 });

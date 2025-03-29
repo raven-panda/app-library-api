@@ -27,9 +27,7 @@ export class FileController {
 
   @Post()
   @UseInterceptors(CustomFileInterceptor)
-  create(
-    @UploadedFile(ParseImageFilePipe) file: Express.Multer.File,
-  ) {
+  create(@UploadedFile(ParseImageFilePipe) file: Express.Multer.File) {
     return { id: file.filename };
   }
 

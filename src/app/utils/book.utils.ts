@@ -24,7 +24,10 @@ export async function buildBookSearch(
   if (payload.editor)
     qb.andWhere('book.editor LIKE :editor', { editor: `%${payload.editor}%` });
   if (payload.author)
-    qb.andWhere("LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:author)", { author: `%${payload.author}%` });
+    qb.andWhere(
+      "LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:author)",
+      { author: `%${payload.author}%` },
+    );
   if (payload.isbn)
     qb.andWhere('book.isbn LIKE :isbn', { isbn: `%${payload.isbn}%` });
   if (payload.genre)
@@ -34,7 +37,9 @@ export async function buildBookSearch(
       language: `%${payload.language}%`,
     });
   if (payload.themes?.length) {
-    const conditions = payload.themes.map((_, index) => `book.themes LIKE :theme${index}`).join(' OR ');
+    const conditions = payload.themes
+      .map((_, index) => `book.themes LIKE :theme${index}`)
+      .join(' OR ');
     const parameters = payload.themes.reduce((acc, theme, index) => {
       acc[`theme${index}`] = `%${theme}%`;
       return acc;
@@ -58,17 +63,20 @@ export async function buildBookSearch(
       maxPrice: payload.priceRange[1],
     });
 
-  return await qb.select([
-    'book.id',
-    'book.title',
-    'book.coverFileId',
-    'book.authorId',
-    'book.reviews',
-    'book.editor',
-    'book.averageRate',
-    'book.isForRent',
-    'book.price'
-  ]).leftJoinAndSelect('book.author', 'author').getMany();
+  return await qb
+    .select([
+      'book.id',
+      'book.title',
+      'book.coverFileId',
+      'book.authorId',
+      'book.reviews',
+      'book.editor',
+      'book.averageRate',
+      'book.isForRent',
+      'book.price',
+    ])
+    .leftJoinAndSelect('book.author', 'author')
+    .getMany();
 }
 
 /** @todo: implement author parameter */
@@ -76,11 +84,7 @@ const processSearchAll = (
   qb: SelectQueryBuilder<Book>,
   searchString: string,
 ) => {
-  const searchFields = [
-    'book.title',
-    'book.editor',
-    'book.isbn',
-  ];
+  const searchFields = ['book.title', 'book.editor', 'book.isbn'];
 
   searchFields.forEach((field, index) => {
     if (index === 0) {
@@ -90,6 +94,8 @@ const processSearchAll = (
     }
   });
 
-  qb.leftJoinAndSelect("book.author", "author")
-    .orWhere("LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:query)", { query: `%${searchString}%` });
+  qb.leftJoinAndSelect('book.author', 'author').orWhere(
+    "LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:query)",
+    { query: `%${searchString}%` },
+  );
 };

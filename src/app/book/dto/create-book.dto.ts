@@ -18,9 +18,9 @@ import {
   TargetAudienceValues,
 } from '../../../type/targetaudience.type';
 import { Transform } from 'class-transformer';
-import {DtoAbstract} from "../../../type/abstracts/dto.abstract";
-import {Book} from "../entities/book.entity";
-import {InvalidClassException} from "@nestjs/core/errors/exceptions";
+import { DtoAbstract } from '../../../type/abstracts/dto.abstract';
+import { Book } from '../entities/book.entity';
+import { InvalidClassException } from '@nestjs/core/errors/exceptions';
 
 export class CreateBookDto extends DtoAbstract<Book> {
   @IsNotEmpty()
@@ -95,5 +95,4 @@ export class CreateBookDto extends DtoAbstract<Book> {
   fromEntity(entity: Book): CreateBookDto {
     throw new InvalidClassException("This DTO doesn't support this method.");
   }
-
 }

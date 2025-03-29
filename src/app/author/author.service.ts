@@ -12,7 +12,7 @@ export class AuthorService {
 
   public async findAll(): Promise<AuthorDto[]> {
     const authors = await this.authorRepository.find({
-      relations: ['books']
+      relations: ['books'],
     });
     return authors.map((a) => new AuthorDto().fromEntity(a));
   }
