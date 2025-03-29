@@ -23,6 +23,8 @@ export async function buildBookSearch(
     qb.andWhere('book.title LIKE :title', { title: `%${payload.title}%` });
   if (payload.editor)
     qb.andWhere('book.editor LIKE :editor', { editor: `%${payload.editor}%` });
+  if (payload.author)
+    qb.andWhere("LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:author)", { author: `%${payload.author}%` });
   if (payload.isbn)
     qb.andWhere('book.isbn LIKE :isbn', { isbn: `%${payload.isbn}%` });
   if (payload.genre)
@@ -88,6 +90,6 @@ const processSearchAll = (
     }
   });
 
-  /*qb.leftJoinAndSelect("book.author", "author")
-    .orWhere("LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:query)", { query: `%${searchString}%` });*/
+  qb.leftJoinAndSelect("book.author", "author")
+    .orWhere("LOWER(CONCAT(author.firstName, ' ', author.lastName)) LIKE LOWER(:query)", { query: `%${searchString}%` });
 };
