@@ -51,7 +51,6 @@ export class BookService {
   async search(payload: SearchBookDto): Promise<BookGlobalDto[]> {
     const qb = this.booksRepository.createQueryBuilder('book');
     const results = await buildBookSearch(qb, payload);
-    console.log({ result: results?.[0] });
     return results.map((result) => new BookGlobalDto().fromEntity(result));
   }
 

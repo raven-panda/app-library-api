@@ -29,7 +29,7 @@ describe('When I request book resource', () => {
     await app.close();
   });
 
-  it('Then [GET]/book/search should return a collection of all books', () => {
+  test('Then [GET]/book/search should return a collection of all books', () => {
     return request(app.getHttpServer())
       .get('/book/search')
       .expect(200)
@@ -38,11 +38,12 @@ describe('When I request book resource', () => {
       });
   });
 
-  it('Then [POST]/book with valid body should return 201 and data returned should be valid', () => {
+  test('Then [POST]/book with valid body should return 201 and data returned should be valid', () => {
     const bookToCreate: CreateBookDto = {
       isbn: 'TestIsbn',
       title: 'TestTitle',
       editor: 'TestEditor',
+      authorId: '2fd73c2e-ca36-4313-a961-4980e5587533',
       coverFileId: 'test-file.jpeg',
       genre: 'NOVEL',
       format: 'PAPERBACK',
@@ -87,7 +88,7 @@ describe('When I request book resource', () => {
       });
   });
 
-  it('Then [POST]/book with invalid body should return 400', () => {
+  test('Then [POST]/book with invalid body should return 400', () => {
     return request(app.getHttpServer()).post('/book').send({}).expect(400);
   });
 });

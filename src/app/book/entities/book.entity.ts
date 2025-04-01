@@ -46,10 +46,10 @@ export class Book extends EntityAbstract<CreateBookDto, UpdateBookDto> {
   @Column({ type: 'enum', enum: BookGenreValues })
   genre: BookGenreType;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'json' })
   themes: BookThemeType[];
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'json', nullable: true })
   otherThemes: string[] | null;
 
   @Column({ type: 'enum', enum: BookFormatValues })
