@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2125110425-1" author="amaire">
+        <createTable tableName="rp_user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="user_pk" />
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="username" type="varchar(60)" />
+
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2125110425-2" author="amaire">
+        <createTable tableName="rp_user_role">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="user_role_pk"/>
+            </column>
+
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addColumn tableName="rp_user">
+            <column name="role_id" type="int">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="rp_user" baseColumnNames="role_id" constraintName="fk_user_role_id"
+             referencedTableName="rp_user_role"
+             referencedColumnNames="id"
+        />
+
+        <insert tableName="rp_user_role">
+            <column name="name">ROLE_USER</column>
+        </insert>
+
+        <insert tableName="rp_user_role">
+            <column name="name">ROLE_ADMIN</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
